@@ -1,21 +1,56 @@
+"use client";
+
+import { useState, useRef, useEffect } from 'react';
+import Image from "next/image";
+
 export default function Navbar() {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLLIElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
-        <nav className="bg-slate-950">
-            <ul className="flex justify-end gap-4">
-                <li className="p-2 text-white">Home</li>
-                <li className="p-2">
-                    <select 
-                        name="Options" 
-                        id="options"
-                        className="px-2 py-1 border text-white bg-black rounded"
-                    >
-                        <option value="#">opt1</option>
-                        <option value="#">opt2</option>
-                        <option value="#">opt3</option>
-                        <option value="#">opt4</option>
-                    </select>
+        <nav className="bg-slate-950 flex items-center justify-between px-4">
+            {/* logo */}
+            <ul className='flex'>
+                <li>
+                    <Image src="/Assets/inspec-logo.png" alt="Inspec logo"
+                        width={50}
+                        height={50}
+                        priority />
                 </li>
+            </ul>
+            {/* options */}
+            <ul className="flex">
+                <li className="p-2 text-white">Home</li>
+                
+                {/* dropdown start */}
+                <li className="relative p-2" ref={dropdownRef}>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="text-white px-3 border rounded-md hover:border-slate-700 hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+                    >
+                        Data
+                    </button>
+                    <div className={`absolute top-full mt-1 right-0 bg-slate-300 border rounded-md shadow-lg min-w-[150px] ${isOpen ? 'block' : 'hidden'} text-center`}>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">a</a>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">b</a>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">c</a>
+                    </div>
+                </li>
+                {/* dropdown end */}
+
                 <li className="p-2 text-white">About</li>
+                <li className="p-2 text-white">Code of Conducts</li>
             </ul>
         </nav>
     );
