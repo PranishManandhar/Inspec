@@ -19,7 +19,7 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className="bg-slate-950 flex items-center justify-between px-4">
+        <nav className="bg-slate-950 flex items-center justify-between px-4 relative z-50">
             {/* logo */}
             <ul className='flex'>
                 <li>
@@ -42,9 +42,9 @@ export default function Navbar() {
                         Data
                     </button>
                     <div className={`absolute top-full mt-1 right-0 bg-slate-300 border rounded-md shadow-lg min-w-[150px] ${isOpen ? 'block' : 'hidden'} text-center`}>
-                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">a</a>
-                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">b</a>
-                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">c</a>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">data 1</a>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">data 2</a>
+                        <a href="#" className="block px-4 py-2 text-black hover:bg-slate-400">data 3</a>
                     </div>
                 </li>
                 {/* dropdown end */}
