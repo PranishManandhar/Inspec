@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
+import { HomeSharpIcon,InfoSharpIcon } from '@/public/icons';
 import Image from "next/image";
 
 export default function Navbar() {
@@ -31,7 +32,7 @@ export default function Navbar() {
             </ul>
             {/* options */}
             <ul className="flex">
-                <li className="p-2 text-white">Home</li>
+                <li className="p-2 text-white"><HomeSharpIcon/> Home</li>
                 
                 {/* dropdown start */}
                 <li className="relative p-2" ref={dropdownRef}>
@@ -49,7 +50,7 @@ export default function Navbar() {
                 </li>
                 {/* dropdown end */}
 
-                <li className="p-2 text-white">About</li>
+                <li className="p-2 text-white"><InfoSharpIcon/> About</li>
                 <li className="p-2 text-white">Code of Conducts</li>
             </ul>
         </nav>

@@ -1,0 +1,30 @@
+[
+    {
+        "id":1,
+        "Image":"",
+        "Name":"Pranish Manandhar",
+        "Roll":"241324",
+        "Email":"mdrpranish00@gmail.com"
+    },
+    {
+        "id":2,
+        "Image":"",
+        "Name":"Sambhav Karki",
+        "Roll":"241334",
+        "Email":"mdrpranish00@gmail.com"
+    },
+    {
+        "id":3,
+        "Image":"",
+        "Name":"Saroj Aidi",
+        "Roll":"241327",
+        "Email":"mdrpranish00@gmail.com"
+    },
+    {
+        "id":4,
+        "Image":"",
+        "Name":"Amrita chaudhari",
+        "Roll":"241302",
+        "Email":"mdrpranish00@gmail.com"
+    }
+]
