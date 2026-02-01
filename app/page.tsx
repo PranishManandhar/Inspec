@@ -1,4 +1,4 @@
-import { Navbar, Carousel, Footer, Copyright } from "./Individual components";
+import { Navbar, Carousel, Footer, Copyright } from "./components";
 import Image from "next/image";
 import devs from "../app/json-files/members.json";
 
@@ -12,7 +12,7 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 my-20">
         <hr className="border-slate-700/30 mb-12" />
         <h1 className="text-3xl md:text-5xl font-semibold text-center">
-          Recently Added Data
+          Categories
         </h1>
         <div className="grid grid-flow-col grid-rows-3 gap-4 text-center pt-9">
           <div className="p-3 text-2xl font-light border border-black rounded-md">link 1</div>

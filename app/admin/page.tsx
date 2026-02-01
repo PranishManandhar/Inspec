@@ -1,4 +1,4 @@
-import {Navbar,Footer,Copyright} from "../Individual components/index";
+import {Navbar,Footer,Copyright} from "../components/index";
 export default function Admin() {
     return (
         <>

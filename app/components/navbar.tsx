@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useRef, useEffect } from 'react';
 import { HomeSharpIcon,InfoSharpIcon } from '@/public/icons';
 import Image from "next/image";
@@ -35,7 +34,10 @@ export default function Navbar() {
                 <li className="p-2 text-white"><HomeSharpIcon/> Home</li>
                 
                 {/* dropdown start */}
-                <li className="relative p-2" ref={dropdownRef}>
+                <li className="relative p-2" ref={dropdownRef}
+                
+                        onMouseEnter={()=>setIsOpen(!isOpen)}
+                        onMouseLeave={()=>setIsOpen(false)}>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="text-white px-3 border rounded-md hover:border-slate-700 hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
