@@ -10,10 +10,9 @@ export default function Carousel() {
     const [count, setcount] = useState(0);
 
     // temporary images
-    const images = ["/Assets/carousel-Images/gremragi.jpeg",
-        "/Assets/carousel-Images/Higurashi no naku koro ni.jpeg",
-        "/Assets/carousel-Images/sayo project.png"];
-
+    const images = ["/Assets/carousel-Images/car1.jpg",
+        "/Assets/carousel-Images/car2.jpg",
+        "/Assets/carousel-Images/car3.jpg"];
 
     // logic for the carousel buttons
 

@@ -1,6 +1,8 @@
 import { Navbar, Carousel, Footer, Copyright } from "./components";
 import Image from "next/image";
+import Link from "next/link";
 import devs from "../app/json-files/members.json";
+
 
 export default function Home() {
   return (
@@ -15,15 +17,15 @@ export default function Home() {
           Categories
         </h1>
         <div className="grid grid-flow-col grid-rows-3 gap-4 text-center pt-9">
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 1</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 2</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 3</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 4</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 5</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 6</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 7</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 8</div>
-          <div className="p-3 text-2xl font-light border border-black rounded-md">link 9</div>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 1</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 2</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 3</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 4</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 5</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 6</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 7</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 8</Link>
+          <Link href = {"/data/Data1"} className="p-3 text-2xl font-light border border-black rounded-md">link 9</Link>
         </div>
       </section>
 

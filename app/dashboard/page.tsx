@@ -1,5 +1,5 @@
-import {Navbar,Footer,Copyright} from "../components/index";
-export default function Admin() {
+import {Navbar,Footer,Copyright} from "@/app/components/index";
+export default function DashBoard() {
     return (
         <>
             <Navbar/>
