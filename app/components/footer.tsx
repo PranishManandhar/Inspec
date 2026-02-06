@@ -1,6 +1,30 @@
 "use client";
 
 import * as Icon from '@/public/icons';
+import { useState } from 'react';
+
+function ContactItem({ icon: IconComponent, value }: { icon: any, value: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(value)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+      })
+      .catch(() => alert("Failed to copy"));
+  };
+
+  return (
+    <p
+      onClick={handleCopy}
+      className="flex items-center gap-2 hover:underline cursor-pointer relative"
+    >
+      <IconComponent className="text-white" /> {value}
+      {copied && <span className="absolute right-0 text-sm text-green-400">Copied!</span>}
+    </p>
+  );
+}
 
 export default function Footer() {
   return (
@@ -10,15 +34,9 @@ export default function Footer() {
         {/* Contacts */}
         <div className="space-y-2">
           <h3 className="font-bold text-2xl mb-3">Contacts</h3>
-          <p className="flex items-center gap-2">
-            <Icon.LocalPhoneSharpIcon className="text-white" /> +977-0123456
-          </p>
-          <p className="flex items-center gap-2">
-            <Icon.PhoneAndroidSharpIcon className="text-white" /> +977-9876543210
-          </p>
-          <p className="flex items-center gap-2 mt-4 hover:underline cursor-pointer">
-            <Icon.MailOutlineIcon className="text-white" /> help@inspec.org
-          </p>
+          <ContactItem icon={Icon.LocalPhoneSharpIcon} value="+977-0123456" />
+          <ContactItem icon={Icon.PhoneAndroidSharpIcon} value="+977-9876543210" />
+          <ContactItem icon={Icon.MailOutlineIcon} value="help@inspec.org" />
         </div>
 
         {/* Address */}
