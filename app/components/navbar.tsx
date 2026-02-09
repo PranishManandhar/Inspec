@@ -54,12 +54,12 @@ export default function Navbar() {
 
                     <li className="p-2 text-white flex items-center gap-1">
                         <InfoSharpIcon />
-                        <Link href={"/about-us"}>About us</Link>
+                        <Link href={"/details#about"}>About us</Link>
                     </li>
 
                     <li className="p-2 text-white flex items-center gap-1">
                         <LocalPhoneSharpIcon />
-                        <Link href={"/contact"}>Contact us</Link>
+                        <Link href={"/details#contact"}>Contact us</Link>
                     </li>
                 </ul>
             </nav>
