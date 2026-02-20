@@ -5,7 +5,6 @@ import {
     Overview,
     ManageData,
     ManageUser,
-    Security,
     Settings,
     Logs,
     AccessLogs,
@@ -18,7 +17,6 @@ export default function DashBoard() {
         "Manage Data",
         "Manage Users",
         "Settings",
-        "Security Tools",
         "Logs",
         "Access Logs",
     ];
@@ -26,7 +24,8 @@ export default function DashBoard() {
     return (
         <>
             <Navbar />
-            <div className="flex w-full max-h">
+            <div className="flex w-full overflow-hidden h-[calc(100vh-120px)]">
+                {/* left side */}
                 <div className="w-1/5">
                     <ul>
                         {options.map((label, index) => (
@@ -45,14 +44,14 @@ export default function DashBoard() {
                         ))}
                     </ul>
                 </div>
-                <div className="w-4/5 border-0 border-l-4 px-6 border-black">
+                {/* right side */}
+                <div className="w-4/5 border-0 border-l-4 px-6 border-black overflow-y-auto">
                     {pageIndex === 0 && <Overview />}
                     {pageIndex === 1 && <ManageData />}
                     {pageIndex === 2 && <ManageUser />}
                     {pageIndex === 3 && <Settings />}
-                    {pageIndex === 4 && <Security />}
-                    {pageIndex === 5 && <Logs />}
-                    {pageIndex === 6 && <AccessLogs />}
+                    {pageIndex === 4 && <Logs />}
+                    {pageIndex === 5 && <AccessLogs />}
                 </div>
             </div>
             <Footer />

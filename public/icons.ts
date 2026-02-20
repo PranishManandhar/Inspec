@@ -12,7 +12,11 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import CopyrightIcon from '@mui/icons-material/Copyright';
-
+import Person2Icon from '@mui/icons-material/Person2';
+import SchoolIcon from '@mui/icons-material/School';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 export{
     HomeSharpIcon,
@@ -28,5 +32,10 @@ export{
     MailOutlineIcon,
     GroupsIcon,
     CopyrightIcon,
-    ArrowDropUpIcon
+    ArrowDropUpIcon,
+    Person2Icon,
+    SchoolIcon,
+    AccountBalanceIcon,
+    LocalHospitalIcon,
+    LocationCityIcon
 };
