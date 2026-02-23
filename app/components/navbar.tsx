@@ -67,24 +67,17 @@ export default function Navbar() {
             {/* {this is under work please dont touch} */}
             <div ref={ignoreRef} className={`grid grid-cols-4 right-0 top-full bg-slate-300 border rounded-md shadow-lg w-full ${isOpen ? 'block' : 'hidden'} text-center`}>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data1"}>Data 1</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data2"}>Data 2</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data3"}>Data 3</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data1"}>Person List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data1"}>Companies List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data4"}>Data 4</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data5"}>Data 5</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data6"}>Data 6</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data4"}>Schools List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data7"}>Data 7</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data8"}>Data 8</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data9"}>Data 9</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data7"}>juristrictions List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data10"}>Data 10</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data11"}>Data 11</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data12"}>Data 12</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data12"}>Hospitals List</Link>
                 </div>
             </div>
         </>

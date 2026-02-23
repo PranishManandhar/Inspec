@@ -17,7 +17,7 @@ export default function Home() {
       <Navbar />
       <Carousel />
 
-      {/* Section: Recently Added */}
+      {/* Section: Categories*/}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 my-20">
         <hr className="border-slate-700/30 mb-12" />
         <h1 className="text-3xl md:text-5xl font-semibold text-center">
@@ -25,7 +25,7 @@ export default function Home() {
         </h1>
         <div className="grid grid-cols-3 gap-4 pt-9">
           <Link
-            href={"/data/Data1"}
+            href={"/data/people"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -34,7 +34,7 @@ export default function Home() {
             <span className="text-xl font-light">Persons List</span>
           </Link>
           <Link
-            href={"/data/Data1"}
+            href={"/data/schools"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -43,7 +43,7 @@ export default function Home() {
             <span className="text-xl font-light">Schools List</span>
           </Link>
           <Link
-            href={"/data/Data1"}
+            href={"/data/juristrictions"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -52,7 +52,7 @@ export default function Home() {
             <span className="text-xl font-light">Jurisdictions List</span>
           </Link>
           <Link
-            href={"/data/Data1"}
+            href={"/data/hospitals"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -61,7 +61,7 @@ export default function Home() {
             <span className="text-xl font-light">Hospitals List</span>
           </Link>
           <Link
-            href={"/data/Data1"}
+            href={"/data/companies"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -79,7 +79,7 @@ export default function Home() {
           Team Behind Inspec
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {devs.map((dev) => (
             <div
               key={dev.Name}

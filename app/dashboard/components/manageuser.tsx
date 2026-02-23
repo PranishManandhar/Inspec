@@ -2,6 +2,10 @@ export default function ManageUser() {
   return (
     <>
       <h1 className="text-4xl font-bold p-4">Manage Users</h1>
+        {/* table view here */}
+    
+
+    
       {/* add user */}
       <div className="border rounded-lg p-6 drop-shadow-lg">
         <h2 className="text-2xl font-bold mb-6">Add User</h2>
