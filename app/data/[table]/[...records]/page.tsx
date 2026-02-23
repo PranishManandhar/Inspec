@@ -87,7 +87,7 @@ async function getPerson(id: string): Promise<Person> {
 export default async function PersonRecord({ params }: { params: Promise<{ table: string, records: string[] }> }) {
     const {table, records } = await params;
 
-    if (table !== "people") notFound();
+    if (table !== "persons") notFound();
 
     const person = await getPerson(records[0]);
     const age = calculateAge(person.dob);
@@ -104,7 +104,7 @@ export default async function PersonRecord({ params }: { params: Promise<{ table
         <div className="mx-auto max-w-5xl">
           <div className="mb-8">
             <p className="text-sm text-gray-500">
-                Data1/1
+                {`${table}/${records}`}
             </p>
             <h1 className="mt-1 text-3xl font-bold text-gray-900">
               Person Record

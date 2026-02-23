@@ -25,7 +25,7 @@ export default function Home() {
         </h1>
         <div className="grid grid-cols-3 gap-4 pt-9">
           <Link
-            href={"/data/people"}
+            href={"/data/persons"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
@@ -43,13 +43,13 @@ export default function Home() {
             <span className="text-xl font-light">Schools List</span>
           </Link>
           <Link
-            href={"/data/juristrictions"}
+            href={"/data/jurisdictions"}
             className="flex flex-col items-center gap-3 p-6 border border-black rounded-md hover:bg-slate-50 transition-colors"
           >
             <div className="p-3 bg-slate-100 rounded-full">
               <AccountBalanceIcon className="text-slate-600" fontSize="large" />
             </div>
-            <span className="text-xl font-light">Jurisdictions List</span>
+            <span className="text-xl font-light">jurisdictions List</span>
           </Link>
           <Link
             href={"/data/hospitals"}

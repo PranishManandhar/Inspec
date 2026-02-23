@@ -67,17 +67,17 @@ export default function Navbar() {
             {/* {this is under work please dont touch} */}
             <div ref={ignoreRef} className={`grid grid-cols-4 right-0 top-full bg-slate-300 border rounded-md shadow-lg w-full ${isOpen ? 'block' : 'hidden'} text-center`}>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data1"}>Person List</Link>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data1"}>Companies List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/persons"}>Person List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/companies"}>Companies List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data4"}>Schools List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/schools"}>Schools List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data7"}>juristrictions List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/jurisdictions"}>jurisdictions List</Link>
                 </div>
                 <div className='m-3 border border-slate-700 rounded-md'>
-                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/data12"}>Hospitals List</Link>
+                    <Link className="block px-4 py-2 text-black hover:bg-slate-400" href={"/data/hospitals"}>Hospitals List</Link>
                 </div>
             </div>
         </>
