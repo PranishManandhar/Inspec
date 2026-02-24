@@ -8,6 +8,6 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Protected routes
-router.get('/profile', authenticateToken, getProfile);
+router.get('/profile', authenticateToken, getProfile); // ✅ only one /profile
 
 module.exports = router;

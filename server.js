@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const personRoutes = require('./routes/personRoutes');
 const historyRoutes = require('./routes/historyRoutes');
 const organizationRoutes = require('./routes/organizationRoutes');
+const dataLogsRoutes = require('./routes/dataLogsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/persons', personRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/organizations', organizationRoutes);
+app.use('/api/logs', dataLogsRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -46,7 +48,8 @@ app.get('/', (req, res) => {
             auth: '/api/auth',
             persons: '/api/persons',
             history: '/api/history',
-            organizations: '/api/organizations'
+            organizations: '/api/organizations',
+            logs: '/api/logs'
         }
     });
 });
@@ -62,7 +65,7 @@ app.use((req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
     console.error('Error:', err);
-    
+
     // Multer file upload errors
     if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({
@@ -70,7 +73,7 @@ app.use((err, req, res, next) => {
             message: 'File size too large. Maximum size is 5MB'
         });
     }
-    
+
     res.status(err.status || 500).json({
         success: false,
         message: err.message || 'Internal server error'
@@ -82,12 +85,12 @@ const startServer = async () => {
     try {
         // Test database connection
         const dbConnected = await testConnection();
-        
+
         if (!dbConnected) {
             console.error('⚠️  Warning: Database connection failed. Please check your database configuration.');
             console.log('Server will start anyway, but database operations will fail.');
         }
-        
+
         app.listen(PORT, () => {
             console.log('\n' + '='.repeat(60));
             console.log('🚀 Person Tracking System API Server');
@@ -96,6 +99,12 @@ const startServer = async () => {
             console.log(`🌐 API URL: http://localhost:${PORT}`);
             console.log(`📝 Health Check: http://localhost:${PORT}/api/health`);
             console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log('\n📋 Available Endpoints:');
+            console.log('   - Authentication: /api/auth');
+            console.log('   - Persons: /api/persons');
+            console.log('   - History: /api/history');
+            console.log('   - Organizations: /api/organizations');
+            console.log('   - Data Logs: /api/logs');
             console.log('='.repeat(60) + '\n');
         });
     } catch (error) {

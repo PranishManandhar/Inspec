@@ -93,6 +93,12 @@ const login = async (req, res) => {
             });
         }
 
+        // Increment login count
+        await promisePool.query(
+            'UPDATE Login SET login_count = login_count + 1 WHERE login_id = ?',
+            [user.login_id]
+        );
+
         // Generate JWT token
         const token = jwt.sign(
             { id: user.login_id, username: user.username, role: user.role },
@@ -109,7 +115,8 @@ const login = async (req, res) => {
                     id: user.login_id,
                     username: user.username,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    login_count: user.login_count + 1
                 }
             }
         });
@@ -127,7 +134,7 @@ const login = async (req, res) => {
 const getProfile = async (req, res) => {
     try {
         const [users] = await promisePool.query(
-            'SELECT login_id, username, email, role, created_at FROM Login WHERE login_id = ?',
+            'SELECT login_id, username, email, role, login_count, created_at FROM Login WHERE login_id = ?',
             [req.user.id]
         );
 
