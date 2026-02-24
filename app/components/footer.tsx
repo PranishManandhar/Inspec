@@ -2,6 +2,7 @@
 
 import * as Icon from '@/public/icons';
 import { useState } from 'react';
+import Link from 'next/link';
 
 function ContactItem({ icon: IconComponent, value }: { icon: any, value: string }) {
   const [copied, setCopied] = useState(false);
@@ -77,7 +78,7 @@ export default function Footer() {
             <Icon.GroupsIcon className="text-white" /> Team
           </p>
           <p className="flex items-center gap-2 mt-4 hover:underline cursor-pointer">
-            <Icon.ArrowDropUpIcon className="text-white" /> Back to top
+            <Link href="/signup">Login</Link>
           </p>
         </div>
 

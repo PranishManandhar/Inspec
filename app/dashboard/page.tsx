@@ -7,7 +7,6 @@ import {
     ManageUser,
     Settings,
     Logs,
-    AccessLogs,
 } from "@/app/dashboard/components";
 
 export default function DashBoard() {
@@ -18,7 +17,6 @@ export default function DashBoard() {
         "Manage Users",
         "Settings",
         "Logs",
-        "Access Logs",
     ];
 
     return (
@@ -51,7 +49,6 @@ export default function DashBoard() {
                     {pageIndex === 2 && <ManageUser />}
                     {pageIndex === 3 && <Settings />}
                     {pageIndex === 4 && <Logs />}
-                    {pageIndex === 5 && <AccessLogs />}
                 </div>
             </div>
             <Footer />
