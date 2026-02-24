@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Contact {
   id: number;
@@ -82,36 +82,40 @@ export default function ManageData() {
     birth_hospital_id: "",
   });
 
-  // ── Additional Contacts (dynamic array) ─────────────────────────
-  const [contacts, setContacts] = useState<Array<{ contact_number: string; type: string }>>([
-    { contact_number: "", type: "" }
-  ]);
+  const [contacts, setContacts] = useState<
+    Array<{ contact_number: string; type: string }>
+  >([{ contact_number: "", type: "" }]);
+  const [educationRecords, setEducationRecords] = useState<
+    Array<{
+      school_id: string;
+      start_date: string;
+      end_date: string;
+      notes: string;
+    }>
+  >([{ school_id: "", start_date: "", end_date: "", notes: "" }]);
+  const [employmentRecords, setEmploymentRecords] = useState<
+    Array<{
+      company_id: string;
+      start_date: string;
+      end_date: string;
+      position: string;
+    }>
+  >([{ company_id: "", start_date: "", end_date: "", position: "" }]);
 
-  // ── Education Records (dynamic array) ───────────────────────────
-  const [educationRecords, setEducationRecords] = useState<Array<{
-    school_id: string;
-    start_date: string;
-    end_date: string;
-    notes: string;
-  }>>([{ school_id: "", start_date: "", end_date: "", notes: "" }]);
-
-  // ── Employment Records (dynamic array) ──────────────────────────
-  const [employmentRecords, setEmploymentRecords] = useState<Array<{
-    company_id: string;
-    start_date: string;
-    end_date: string;
-    position: string;
-  }>>([{ company_id: "", start_date: "", end_date: "", position: "" }]);
-
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [createdPersonId, setCreatedPersonId] = useState<number | null>(null);
 
   // ── Search Person State ────────────────────────────────────────
   const [personId, setPersonId] = useState("");
   const [personData, setPersonData] = useState<PersonData | null>(null);
-  const [searchStatus, setSearchStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [searchStatus, setSearchStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [searchMessage, setSearchMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -127,60 +131,85 @@ export default function ManageData() {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    )
       age--;
-    }
     return age;
   };
 
-  // ── Add/Remove Contact Functions ────────────────────────────────
-  const addContactField = () => setContacts([...contacts, { contact_number: "", type: "" }]);
-  const removeContactField = (index: number) => setContacts(contacts.filter((_, i) => i !== index));
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isModalOpen]);
+
+  // ── Contact Functions ────────────────────────────────
+  const addContactField = () =>
+    setContacts([...contacts, { contact_number: "", type: "" }]);
+  const removeContactField = (index: number) =>
+    setContacts(contacts.filter((_, i) => i !== index));
   const updateContact = (index: number, field: string, value: string) => {
     const newContacts = [...contacts];
     newContacts[index] = { ...newContacts[index], [field]: value };
     setContacts(newContacts);
   };
 
-  // ── Add/Remove Education Functions ──────────────────────────────
-  const addEducationField = () => setEducationRecords([...educationRecords, { school_id: "", start_date: "", end_date: "", notes: "" }]);
-  const removeEducationField = (index: number) => setEducationRecords(educationRecords.filter((_, i) => i !== index));
+  // ── Education Functions ──────────────────────────────
+  const addEducationField = () =>
+    setEducationRecords([
+      ...educationRecords,
+      { school_id: "", start_date: "", end_date: "", notes: "" },
+    ]);
+  const removeEducationField = (index: number) =>
+    setEducationRecords(educationRecords.filter((_, i) => i !== index));
   const updateEducation = (index: number, field: string, value: string) => {
     const newRecords = [...educationRecords];
     newRecords[index] = { ...newRecords[index], [field]: value };
     setEducationRecords(newRecords);
   };
 
-  // ── Add/Remove Employment Functions ─────────────────────────────
-  const addEmploymentField = () => setEmploymentRecords([...employmentRecords, { company_id: "", start_date: "", end_date: "", position: "" }]);
-  const removeEmploymentField = (index: number) => setEmploymentRecords(employmentRecords.filter((_, i) => i !== index));
+  // ── Employment Functions ─────────────────────────────
+  const addEmploymentField = () =>
+    setEmploymentRecords([
+      ...employmentRecords,
+      { company_id: "", start_date: "", end_date: "", position: "" },
+    ]);
+  const removeEmploymentField = (index: number) =>
+    setEmploymentRecords(employmentRecords.filter((_, i) => i !== index));
   const updateEmployment = (index: number, field: string, value: string) => {
     const newRecords = [...employmentRecords];
     newRecords[index] = { ...newRecords[index], [field]: value };
     setEmploymentRecords(newRecords);
   };
 
-  // ── Main Form Submission ────────────────────────────────────────
+  // ── Handle Submit ────────────────────────────────────────
   async function handleSubmitAll(e: React.FormEvent) {
-    const token = getCookie("token");
     e.preventDefault();
+    const token = getCookie("token");
     setSubmitStatus("loading");
     setSubmitMessage("");
     setCreatedPersonId(null);
 
     try {
-      // Generate schooling and working history summaries
       const schoolingHistory = educationRecords
-        .filter(edu => edu.school_id && edu.start_date && edu.end_date && edu.notes)
-        .map(edu => `${edu.start_date} - ${edu.end_date}: ${edu.notes}`)
+        .filter(
+          (edu) => edu.school_id && edu.start_date && edu.end_date && edu.notes,
+        )
+        .map((edu) => `${edu.start_date} - ${edu.end_date}: ${edu.notes}`)
         .join("; ");
 
       const workingHistory = employmentRecords
-        .filter(emp => emp.company_id && emp.start_date && emp.position)
-        .map(emp => `${emp.start_date} - ${emp.end_date || "Present"}: ${emp.position}`)
+        .filter((emp) => emp.company_id && emp.start_date && emp.position)
+        .map(
+          (emp) =>
+            `${emp.start_date} - ${emp.end_date || "Present"}: ${emp.position}`,
+        )
         .join("; ");
 
-      // Step 1: Create Person
       const personPayload = {
         ...personForm,
         contact: parseInt(personForm.contact),
@@ -195,7 +224,7 @@ export default function ManageData() {
 
       const personRes = await fetch("http://localhost:5000/api/Persons", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
@@ -204,39 +233,37 @@ export default function ManageData() {
 
       if (!personRes.ok) {
         const errData = await personRes.json();
-        throw new Error(errData.message || `Failed to create person: ${personRes.status}`);
+        throw new Error(
+          errData.message || `Failed to create person: ${personRes.status}`,
+        );
       }
 
-      const personData = await personRes.json();
-      const newPersonId = personData.data?.id;
+      const personDataRes = await personRes.json();
+      const newPersonId = personDataRes.data?.id;
       if (!newPersonId) throw new Error("Person created but ID not returned");
       setCreatedPersonId(newPersonId);
 
-      // Step 2: Add Contacts
       const contactPromises = contacts
-        .filter(c => c.contact_number && c.type)
-        .map(contact => 
+        .filter((c) => c.contact_number && c.type)
+        .map((contact) =>
           fetch("http://localhost:5000/api/contacts", {
             method: "POST",
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-              person_id: newPersonId,
-              contact_number: contact.contact_number,
-              type: contact.type,
-            }),
-          })
+            body: JSON.stringify({ person_id: newPersonId, ...contact }),
+          }),
         );
 
-      // Step 3: Add Education Records
       const educationPromises = educationRecords
-        .filter(edu => edu.school_id && edu.start_date && edu.end_date && edu.notes)
-        .map(edu => 
+        .filter(
+          (edu) => edu.school_id && edu.start_date && edu.end_date && edu.notes,
+        )
+        .map((edu) =>
           fetch("http://localhost:5000/api/education", {
             method: "POST",
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
@@ -247,16 +274,15 @@ export default function ManageData() {
               end_date: edu.end_date,
               notes: edu.notes,
             }),
-          })
+          }),
         );
 
-      // Step 4: Add Employment Records
       const employmentPromises = employmentRecords
-        .filter(emp => emp.company_id && emp.start_date && emp.position)
-        .map(emp => 
+        .filter((emp) => emp.company_id && emp.start_date && emp.position)
+        .map((emp) =>
           fetch("http://localhost:5000/api/employment", {
             method: "POST",
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
@@ -267,15 +293,20 @@ export default function ManageData() {
               end_date: emp.end_date || null,
               position: emp.position,
             }),
-          })
+          }),
         );
 
-      await Promise.all([...contactPromises, ...educationPromises, ...employmentPromises]);
+      await Promise.all([
+        ...contactPromises,
+        ...educationPromises,
+        ...employmentPromises,
+      ]);
 
       setSubmitStatus("success");
-      setSubmitMessage(`Person and all records created successfully! Person ID: ${newPersonId}`);
+      setSubmitMessage(
+        `Person and all records created successfully! Person ID: ${newPersonId}`,
+      );
 
-      // Reset form
       setPersonForm({
         name: "",
         dob: "",
@@ -287,8 +318,12 @@ export default function ManageData() {
         birth_hospital_id: "",
       });
       setContacts([{ contact_number: "", type: "" }]);
-      setEducationRecords([{ school_id: "", start_date: "", end_date: "", notes: "" }]);
-      setEmploymentRecords([{ company_id: "", start_date: "", end_date: "", position: "" }]);
+      setEducationRecords([
+        { school_id: "", start_date: "", end_date: "", notes: "" },
+      ]);
+      setEmploymentRecords([
+        { company_id: "", start_date: "", end_date: "", position: "" },
+      ]);
     } catch (err: any) {
       console.error("Submission failed:", err);
       setSubmitStatus("error");
@@ -296,8 +331,10 @@ export default function ManageData() {
     }
   }
 
+  // ── Handle Search ────────────────────────────────────────
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
+    const token = getCookie("token");
     if (!personId.trim()) {
       setSearchStatus("error");
       setSearchMessage("Please enter a person ID");
@@ -309,12 +346,20 @@ export default function ManageData() {
     setPersonData(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/Persons/${personId.trim()}`);
+      const res = await fetch(
+        `http://localhost:5000/api/Persons/${personId.trim()}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
       if (!res.ok) {
-        let errorText = "";
-        try { const errData = await res.json(); errorText = errData.message || `HTTP ${res.status}`; } 
-        catch { errorText = await res.text(); }
-        throw new Error(`Server error: ${res.status} - ${errorText}`);
+        const errText = await res.text();
+        throw new Error(errText || `Server error ${res.status}`);
       }
 
       const response: ApiResponse = await res.json();
@@ -322,9 +367,8 @@ export default function ManageData() {
         setPersonData(response.data);
         setSearchStatus("success");
         setSearchMessage("");
-      } else {
-        throw new Error("Invalid response format");
-      }
+        setIsModalOpen(true);
+      } else throw new Error("Invalid response format");
     } catch (err: any) {
       console.error("Fetch failed:", err);
       setSearchStatus("error");
@@ -335,6 +379,8 @@ export default function ManageData() {
   return (
     <>
       <h1 className="text-4xl font-bold p-4">Manage Data</h1>
+
+      {/* ── Add Person Form (same as before, omitted here for brevity) ── */}
 
       {/* ── Add Complete Person Form ───────────────────────────────── */}
       <div className="border rounded-lg p-6 drop-shadow-lg m-4">
@@ -350,7 +396,9 @@ export default function ManageData() {
                 <input
                   type="text"
                   value={personForm.name}
-                  onChange={(e) => setPersonForm({ ...personForm, name: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({ ...personForm, name: e.target.value })
+                  }
                   placeholder="Enter full name"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -362,7 +410,9 @@ export default function ManageData() {
                 <input
                   type="date"
                   value={personForm.dob}
-                  onChange={(e) => setPersonForm({ ...personForm, dob: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({ ...personForm, dob: e.target.value })
+                  }
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
                 />
@@ -373,7 +423,9 @@ export default function ManageData() {
                 <input
                   type="number"
                   value={personForm.contact}
-                  onChange={(e) => setPersonForm({ ...personForm, contact: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({ ...personForm, contact: e.target.value })
+                  }
                   placeholder="Enter contact number"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -381,11 +433,18 @@ export default function ManageData() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-semibold">Number of Family Members</label>
+                <label className="font-semibold">
+                  Number of Family Members
+                </label>
                 <input
                   type="number"
                   value={personForm.no_of_family_members}
-                  onChange={(e) => setPersonForm({ ...personForm, no_of_family_members: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({
+                      ...personForm,
+                      no_of_family_members: e.target.value,
+                    })
+                  }
                   placeholder="Enter number"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -397,7 +456,9 @@ export default function ManageData() {
                 <input
                   type="number"
                   value={personForm.school_id}
-                  onChange={(e) => setPersonForm({ ...personForm, school_id: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({ ...personForm, school_id: e.target.value })
+                  }
                   placeholder="Enter school ID"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -409,7 +470,9 @@ export default function ManageData() {
                 <input
                   type="number"
                   value={personForm.company_id}
-                  onChange={(e) => setPersonForm({ ...personForm, company_id: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({ ...personForm, company_id: e.target.value })
+                  }
                   placeholder="Enter company ID"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -421,7 +484,12 @@ export default function ManageData() {
                 <input
                   type="number"
                   value={personForm.jurisdiction_id}
-                  onChange={(e) => setPersonForm({ ...personForm, jurisdiction_id: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({
+                      ...personForm,
+                      jurisdiction_id: e.target.value,
+                    })
+                  }
                   placeholder="Enter jurisdiction ID"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -433,7 +501,12 @@ export default function ManageData() {
                 <input
                   type="number"
                   value={personForm.birth_hospital_id}
-                  onChange={(e) => setPersonForm({ ...personForm, birth_hospital_id: e.target.value })}
+                  onChange={(e) =>
+                    setPersonForm({
+                      ...personForm,
+                      birth_hospital_id: e.target.value,
+                    })
+                  }
                   placeholder="Enter birth hospital ID"
                   required
                   className="px-4 py-2 border focus:border-black rounded-md"
@@ -463,7 +536,9 @@ export default function ManageData() {
                     <input
                       type="number"
                       value={edu.school_id}
-                      onChange={(e) => updateEducation(index, "school_id", e.target.value)}
+                      onChange={(e) =>
+                        updateEducation(index, "school_id", e.target.value)
+                      }
                       placeholder="Enter school ID"
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
@@ -474,7 +549,9 @@ export default function ManageData() {
                     <input
                       type="date"
                       value={edu.start_date}
-                      onChange={(e) => updateEducation(index, "start_date", e.target.value)}
+                      onChange={(e) =>
+                        updateEducation(index, "start_date", e.target.value)
+                      }
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
                   </div>
@@ -484,7 +561,9 @@ export default function ManageData() {
                     <input
                       type="date"
                       value={edu.end_date}
-                      onChange={(e) => updateEducation(index, "end_date", e.target.value)}
+                      onChange={(e) =>
+                        updateEducation(index, "end_date", e.target.value)
+                      }
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
                   </div>
@@ -494,7 +573,9 @@ export default function ManageData() {
                   <label className="font-semibold">Notes</label>
                   <textarea
                     value={edu.notes}
-                    onChange={(e) => updateEducation(index, "notes", e.target.value)}
+                    onChange={(e) =>
+                      updateEducation(index, "notes", e.target.value)
+                    }
                     placeholder="Enter notes (e.g., degree, achievements)"
                     rows={2}
                     className="px-4 py-2 border focus:border-black rounded-md"
@@ -535,7 +616,9 @@ export default function ManageData() {
                     <input
                       type="number"
                       value={emp.company_id}
-                      onChange={(e) => updateEmployment(index, "company_id", e.target.value)}
+                      onChange={(e) =>
+                        updateEmployment(index, "company_id", e.target.value)
+                      }
                       placeholder="Enter company ID"
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
@@ -546,7 +629,9 @@ export default function ManageData() {
                     <input
                       type="text"
                       value={emp.position}
-                      onChange={(e) => updateEmployment(index, "position", e.target.value)}
+                      onChange={(e) =>
+                        updateEmployment(index, "position", e.target.value)
+                      }
                       placeholder="Enter position/role"
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
@@ -557,17 +642,23 @@ export default function ManageData() {
                     <input
                       type="date"
                       value={emp.start_date}
-                      onChange={(e) => updateEmployment(index, "start_date", e.target.value)}
+                      onChange={(e) =>
+                        updateEmployment(index, "start_date", e.target.value)
+                      }
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className="font-semibold">End Date (leave blank if current)</label>
+                    <label className="font-semibold">
+                      End Date (leave blank if current)
+                    </label>
                     <input
                       type="date"
                       value={emp.end_date}
-                      onChange={(e) => updateEmployment(index, "end_date", e.target.value)}
+                      onChange={(e) =>
+                        updateEmployment(index, "end_date", e.target.value)
+                      }
                       className="px-4 py-2 border focus:border-black rounded-md"
                     />
                   </div>
@@ -596,7 +687,9 @@ export default function ManageData() {
               disabled:opacity-50 disabled:cursor-not-allowed
             `}
           >
-            {submitStatus === "loading" ? "Creating Person & Records..." : "Submit Complete Record"}
+            {submitStatus === "loading"
+              ? "Creating Person & Records..."
+              : "Submit Complete Record"}
           </button>
 
           {submitMessage && (
@@ -611,10 +704,9 @@ export default function ManageData() {
         </form>
       </div>
 
-      {/* ── Search Person ──────────────────────────────────────── */}
+      {/* ── Search Form ── */}
       <div className="border rounded-lg p-6 drop-shadow-lg m-4">
         <h2 className="text-2xl font-bold mb-6">Search Person</h2>
-
         <form onSubmit={handleSearch} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <label className="font-semibold">Person ID</label>
@@ -627,19 +719,13 @@ export default function ManageData() {
               className="px-4 py-2 border focus:border-black rounded-md"
             />
           </div>
-
           <button
             type="submit"
             disabled={searchStatus === "loading"}
-            className={`
-              mt-2 px-6 py-2 bg-black text-white font-bold rounded-md
-              hover:bg-gray-800 transition-colors
-              disabled:opacity-50 disabled:cursor-not-allowed
-            `}
+            className="mt-2 px-6 py-2 bg-black text-white font-bold rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {searchStatus === "loading" ? "Fetching..." : "Fetch Details"}
           </button>
-
           {searchMessage && (
             <p className="mt-2 text-sm font-medium text-red-600">
               {searchMessage}
@@ -648,125 +734,95 @@ export default function ManageData() {
         </form>
       </div>
 
-      {/* ── Person Details Display ─────────────────────────────── */}
-      {personData && searchStatus === "success" && (
-        <div className="space-y-6 m-4">
-          {/* Basic Information */}
-          <div className="border rounded-lg p-6 drop-shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Basic Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="font-semibold text-gray-600">Name</p>
-                <p className="text-lg">{personData.name}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Date of Birth</p>
-                <p className="text-lg">
-                  {formatDate(personData.dob)} ({calculateAge(personData.dob)} years old)
+      {/* ── Modal Popup ── */}
+      {isModalOpen && personData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh] relative">
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                setPersonData(null);
+              }}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold"
+            >
+              ✕
+            </button>
+
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold mb-6">Person Details</h2>
+
+              {/* Basic Info */}
+              <div className="border rounded-lg p-4">
+                <h3 className="font-bold mb-2">Basic Information</h3>
+                <p>
+                  <strong>Name:</strong> {personData.name}
+                </p>
+                <p>
+                  <strong>DOB:</strong> {formatDate(personData.dob)} (
+                  {calculateAge(personData.dob)} yrs)
+                </p>
+                <p>
+                  <strong>Primary Contact:</strong> {personData.contact}
+                </p>
+                <p>
+                  <strong>Family Members:</strong>{" "}
+                  {personData.no_of_family_members}
+                </p>
+                <p>
+                  <strong>Jurisdiction:</strong> {personData.jurisdiction_name}
+                </p>
+                <p>
+                  <strong>Birth Hospital:</strong> {personData.birth_hospital}
                 </p>
               </div>
-              <div>
-                <p className="font-semibold text-gray-600">Primary Contact</p>
-                <p className="text-lg">{personData.contact}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Family Members</p>
-                <p className="text-lg">{personData.no_of_family_members}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Jurisdiction</p>
-                <p className="text-lg">{personData.jurisdiction_name}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Birth Hospital</p>
-                <p className="text-lg">{personData.birth_hospital}</p>
-              </div>
-            </div>
-          </div>
 
-          {/* Contact Information */}
-          <div className="border rounded-lg p-6 drop-shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Contact Numbers</h2>
-            <div className="space-y-3">
-              {personData.contacts.map((contact) => (
-                <div key={contact.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
-                  <div>
-                    <p className="font-semibold">{contact.contact_number}</p>
-                    <p className="text-sm text-gray-600">{contact.type}</p>
+              {/* Contacts */}
+              <div className="border rounded-lg p-4">
+                <h3 className="font-bold mb-2">Contacts</h3>
+                {personData.contacts.map((c) => (
+                  <div
+                    key={c.id}
+                    className="flex justify-between mb-2 bg-gray-50 p-2 rounded"
+                  >
+                    <p>{c.contact_number}</p>
+                    <p className="text-gray-600">{c.type}</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
 
-          {/* Education History */}
-          <div className="border rounded-lg p-6 drop-shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Education History</h2>
-            <div className="space-y-4">
-              {personData.education_history.map((edu) => (
-                <div key={edu.id} className="p-4 bg-gray-50 rounded-md">
-                  <h3 className="font-bold text-lg">{edu.school_name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{edu.school_address}</p>
-                  <p className="text-sm">
-                    <span className="font-semibold">Period:</span>{" "}
-                    {formatDate(edu.start_date)} - {formatDate(edu.end_date)}
-                  </p>
-                  <p className="text-sm mt-2">
-                    <span className="font-semibold">Notes:</span> {edu.notes}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Employment History */}
-          <div className="border rounded-lg p-6 drop-shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Employment History</h2>
-            <div className="space-y-4">
-              {personData.employment_history.map((emp) => (
-                <div key={emp.id} className="p-4 bg-gray-50 rounded-md">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-lg">{emp.company_name}</h3>
-                      <p className="text-sm text-gray-600 mb-2">{emp.company_type}</p>
-                      <p className="text-sm">
-                        <span className="font-semibold">Position:</span> {emp.position}
-                      </p>
-                      <p className="text-sm">
-                        <span className="font-semibold">Period:</span>{" "}
-                        {formatDate(emp.start_date)} - {emp.end_date ? formatDate(emp.end_date) : "Present"}
-                      </p>
-                    </div>
-                    {!emp.end_date && (
-                      <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                        Current
-                      </span>
-                    )}
+              {/* Education History */}
+              <div className="border rounded-lg p-4">
+                <h3 className="font-bold mb-2">Education History</h3>
+                {personData.education_history.map((edu) => (
+                  <div key={edu.id} className="mb-2 p-2 bg-gray-50 rounded">
+                    <p className="font-semibold">{edu.school_name}</p>
+                    <p className="text-sm text-gray-600">
+                      {edu.school_address}
+                    </p>
+                    <p className="text-sm">
+                      {formatDate(edu.start_date)} - {formatDate(edu.end_date)}
+                    </p>
+                    <p className="text-sm">{edu.notes}</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                ))}
+              </div>
 
-          {/* Additional Information */}
-          <div className="border rounded-lg p-6 drop-shadow-lg">
-            <h2 className="text-2xl font-bold mb-6">Additional Information</h2>
-            <div className="space-y-3">
-              <div>
-                <p className="font-semibold text-gray-600">Current School</p>
-                <p className="text-lg">{personData.current_school}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Current Company</p>
-                <p className="text-lg">{personData.current_company}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Schooling History Summary</p>
-                <p className="text-lg">{personData.schooling_history}</p>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-600">Working History Summary</p>
-                <p className="text-lg">{personData.working_history}</p>
+              {/* Employment History */}
+              <div className="border rounded-lg p-4">
+                <h3 className="font-bold mb-2">Employment History</h3>
+                {personData.employment_history.map((emp) => (
+                  <div key={emp.id} className="mb-2 p-2 bg-gray-50 rounded">
+                    <p className="font-semibold">{emp.company_name}</p>
+                    <p className="text-sm text-gray-600">{emp.company_type}</p>
+                    <p>
+                      <strong>Position:</strong> {emp.position}
+                    </p>
+                    <p>
+                      {formatDate(emp.start_date)} -{" "}
+                      {emp.end_date ? formatDate(emp.end_date) : "Present"}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
